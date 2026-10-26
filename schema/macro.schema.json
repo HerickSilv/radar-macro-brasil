@@ -1,0 +1,706 @@
+{
+  "$defs": {
+    "DollarPoint": {
+      "additionalProperties": false,
+      "description": "PTAX de venda com média móvel de 90 dias e banda de ±1 desvio-padrão (nulos no início da janela).",
+      "properties": {
+        "d": {
+          "format": "date",
+          "title": "D",
+          "type": "string"
+        },
+        "v": {
+          "title": "V",
+          "type": "number"
+        },
+        "ma90": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Ma90"
+        },
+        "lo": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Lo"
+        },
+        "hi": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Hi"
+        }
+      },
+      "required": [
+        "d",
+        "v",
+        "ma90",
+        "lo",
+        "hi"
+      ],
+      "title": "DollarPoint",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "Focus": {
+      "additionalProperties": false,
+      "properties": {
+        "asOf": {
+          "format": "date",
+          "title": "Asof",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/FocusItem"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "ipca12mAhead": {
+          "title": "Ipca12Mahead",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asOf",
+        "items",
+        "ipca12mAhead"
+      ],
+      "title": "Focus",
+      "type": "object"
+    },
+    "FocusItem": {
+      "additionalProperties": false,
+      "properties": {
+        "indicator": {
+          "enum": [
+            "IPCA",
+            "Selic",
+            "Câmbio",
+            "PIB Total"
+          ],
+          "title": "Indicator",
+          "type": "string"
+        },
+        "year": {
+          "title": "Year",
+          "type": "integer"
+        },
+        "median": {
+          "title": "Median",
+          "type": "number"
+        },
+        "mean": {
+          "title": "Mean",
+          "type": "number"
+        },
+        "minimum": {
+          "title": "Minimum",
+          "type": "number"
+        },
+        "maximum": {
+          "title": "Maximum",
+          "type": "number"
+        },
+        "respondents": {
+          "title": "Respondents",
+          "type": "integer"
+        },
+        "previousMedian": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previousmedian"
+        },
+        "previousDate": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previousdate"
+        }
+      },
+      "required": [
+        "indicator",
+        "year",
+        "median",
+        "mean",
+        "minimum",
+        "maximum",
+        "respondents",
+        "previousMedian",
+        "previousDate"
+      ],
+      "title": "FocusItem",
+      "type": "object"
+    },
+    "Insight": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "lane": {
+          "enum": [
+            "juros",
+            "inflacao",
+            "cambio"
+          ],
+          "title": "Lane",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "positivo",
+            "neutro",
+            "atencao",
+            "alerta"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "headline": {
+          "title": "Headline",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "meaning": {
+          "title": "Meaning",
+          "type": "string"
+        },
+        "tip": {
+          "title": "Tip",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "rule": {
+          "title": "Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "lane",
+        "severity",
+        "headline",
+        "title",
+        "meaning",
+        "tip",
+        "evidence",
+        "rule"
+      ],
+      "title": "Insight",
+      "type": "object"
+    },
+    "IpcaGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "monthly": {
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Monthly",
+          "type": "array"
+        },
+        "acc12m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acc12M"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "monthly",
+        "acc12m"
+      ],
+      "title": "IpcaGroup",
+      "type": "object"
+    },
+    "IpcaGroups": {
+      "additionalProperties": false,
+      "properties": {
+        "months": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Months",
+          "type": "array"
+        },
+        "general": {
+          "$ref": "#/$defs/IpcaGroup"
+        },
+        "groups": {
+          "items": {
+            "$ref": "#/$defs/IpcaGroup"
+          },
+          "title": "Groups",
+          "type": "array"
+        }
+      },
+      "required": [
+        "months",
+        "general",
+        "groups"
+      ],
+      "title": "IpcaGroups",
+      "type": "object"
+    },
+    "Kpi": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "selic",
+            "cdi",
+            "ipca12m",
+            "usd"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "unit": {
+          "enum": [
+            "% a.a.",
+            "R$"
+          ],
+          "title": "Unit",
+          "type": "string"
+        },
+        "asOf": {
+          "format": "date",
+          "title": "Asof",
+          "type": "string"
+        },
+        "delta": {
+          "title": "Delta",
+          "type": "number"
+        },
+        "deltaUnit": {
+          "enum": [
+            "p.p.",
+            "%"
+          ],
+          "title": "Deltaunit",
+          "type": "string"
+        },
+        "deltaLabel": {
+          "title": "Deltalabel",
+          "type": "string"
+        },
+        "upIsGood": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Upisgood"
+        },
+        "spark": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Spark",
+          "type": "array"
+        },
+        "sparkLabel": {
+          "title": "Sparklabel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "value",
+        "unit",
+        "asOf",
+        "delta",
+        "deltaUnit",
+        "deltaLabel",
+        "upIsGood",
+        "spark",
+        "sparkLabel"
+      ],
+      "title": "Kpi",
+      "type": "object"
+    },
+    "Lane": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "enum": [
+            "juros",
+            "inflacao",
+            "cambio"
+          ],
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "severity": {
+          "enum": [
+            "positivo",
+            "neutro",
+            "atencao",
+            "alerta"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "headline": {
+          "title": "Headline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "severity",
+        "headline"
+      ],
+      "title": "Lane",
+      "type": "object"
+    },
+    "Macro": {
+      "additionalProperties": false,
+      "properties": {
+        "severity": {
+          "enum": [
+            "positivo",
+            "neutro",
+            "atencao",
+            "alerta"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "lanes": {
+          "items": {
+            "$ref": "#/$defs/Lane"
+          },
+          "title": "Lanes",
+          "type": "array"
+        },
+        "rule": {
+          "title": "Rule",
+          "type": "string"
+        }
+      },
+      "required": [
+        "severity",
+        "label",
+        "summary",
+        "lanes",
+        "rule"
+      ],
+      "title": "Macro",
+      "type": "object"
+    },
+    "Meta": {
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": 1,
+          "title": "Schemaversion",
+          "type": "integer"
+        },
+        "generatedAt": {
+          "format": "date-time",
+          "title": "Generatedat",
+          "type": "string"
+        },
+        "asOf": {
+          "format": "date",
+          "title": "Asof",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "title": "Sources",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "generatedAt",
+        "asOf",
+        "sources"
+      ],
+      "title": "Meta",
+      "type": "object"
+    },
+    "Point": {
+      "additionalProperties": false,
+      "properties": {
+        "d": {
+          "format": "date",
+          "title": "D",
+          "type": "string"
+        },
+        "v": {
+          "title": "V",
+          "type": "number"
+        }
+      },
+      "required": [
+        "d",
+        "v"
+      ],
+      "title": "Point",
+      "type": "object"
+    },
+    "Series": {
+      "additionalProperties": false,
+      "properties": {
+        "selic": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Selic",
+          "type": "array"
+        },
+        "cdi": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Cdi",
+          "type": "array"
+        },
+        "ipca12m": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Ipca12M",
+          "type": "array"
+        },
+        "ipcaMonthly": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Ipcamonthly",
+          "type": "array"
+        },
+        "realRate": {
+          "items": {
+            "$ref": "#/$defs/Point"
+          },
+          "title": "Realrate",
+          "type": "array"
+        },
+        "usd": {
+          "items": {
+            "$ref": "#/$defs/DollarPoint"
+          },
+          "title": "Usd",
+          "type": "array"
+        }
+      },
+      "required": [
+        "selic",
+        "cdi",
+        "ipca12m",
+        "ipcaMonthly",
+        "realRate",
+        "usd"
+      ],
+      "title": "Series",
+      "type": "object"
+    },
+    "Source": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "lastObservation": {
+          "format": "date",
+          "title": "Lastobservation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "url",
+        "lastObservation"
+      ],
+      "title": "Source",
+      "type": "object"
+    },
+    "Targets": {
+      "additionalProperties": false,
+      "properties": {
+        "inflationCenter": {
+          "title": "Inflationcenter",
+          "type": "number"
+        },
+        "inflationTolerance": {
+          "title": "Inflationtolerance",
+          "type": "number"
+        }
+      },
+      "required": [
+        "inflationCenter",
+        "inflationTolerance"
+      ],
+      "title": "Targets",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "meta": {
+      "$ref": "#/$defs/Meta"
+    },
+    "kpis": {
+      "items": {
+        "$ref": "#/$defs/Kpi"
+      },
+      "title": "Kpis",
+      "type": "array"
+    },
+    "series": {
+      "$ref": "#/$defs/Series"
+    },
+    "focus": {
+      "$ref": "#/$defs/Focus"
+    },
+    "ipcaGroups": {
+      "$ref": "#/$defs/IpcaGroups"
+    },
+    "targets": {
+      "$ref": "#/$defs/Targets"
+    },
+    "macro": {
+      "$ref": "#/$defs/Macro"
+    },
+    "insights": {
+      "items": {
+        "$ref": "#/$defs/Insight"
+      },
+      "title": "Insights",
+      "type": "array"
+    }
+  },
+  "required": [
+    "meta",
+    "kpis",
+    "series",
+    "focus",
+    "ipcaGroups",
+    "targets",
+    "macro",
+    "insights"
+  ],
+  "title": "MacroSnapshot",
+  "type": "object"
+}

@@ -1,0 +1,77 @@
+name: Deploy (ETL, build e GitHub Pages)
+
+on:
+  schedule:
+    # Dias úteis, 12:30 UTC (09:30 em Brasília), depois da divulgação diária das séries do BCB.
+    - cron: '30 12 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  etl:
+    name: Coleta e validação dos dados
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: etl
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: etl/uv.lock
+      - run: uv sync --locked
+      # Se qualquer fonte falhar ou o contrato for violado, o ETL sai com erro: os jobs seguintes
+      # não rodam e o site publicado anteriormente continua no ar.
+      - name: Gerar macro.json
+        run: uv run radar-etl run
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macro-json
+          path: public/data/macro.json
+          retention-days: 7
+
+  site:
+    name: Build e publicação
+    needs: etl
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v5
+        with:
+          name: macro-json
+          path: public/data
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - name: Build de produção
+        env:
+          VITE_BASE: /${{ github.event.repository.name }}/
+        run: npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

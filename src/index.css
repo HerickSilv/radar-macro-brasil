@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/inter/wght.css';
+
+/* Tokens em um só lugar. Claro é o padrão; escuro vale pelo tema do sistema
+   e pelo atributo data-theme, que tem prioridade sobre o sistema nos dois sentidos. */
+:root {
+  color-scheme: light;
+  --page: #f5f3ec;
+  --surface: #fcfcfb;
+  --ink: #17171a;
+  --ink-2: #44433f;
+  --muted: #5f5e58;
+  --rule: #cfccc0;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --band: rgba(42, 120, 214, 0.14);
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --warning: #fab219;
+  --warning-ink: #7a4f00;
+  --serious: #ec835a;
+  --serious-ink: #9a3412;
+  --critical: #d03b3b;
+  --critical-ink: #b42318;
+  --focus: #2a78d6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --page: #0e0e0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #a9a89e;
+    --rule: #3a3a37;
+    --grid: #2c2c2a;
+    --axis: #4a4a46;
+    --band: rgba(57, 135, 229, 0.22);
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --good: #0ca30c;
+    --good-ink: #0ca30c;
+    --warning: #fab219;
+    --warning-ink: #fab219;
+    --serious: #ec835a;
+    --serious-ink: #ec835a;
+    --critical: #e66767;
+    --critical-ink: #e66767;
+    --focus: #3987e5;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --page: #0e0e0d;
+  --surface: #1a1a19;
+  --ink: #f0efec;
+  --ink-2: #c3c2b7;
+  --muted: #a9a89e;
+  --rule: #3a3a37;
+  --grid: #2c2c2a;
+  --axis: #4a4a46;
+  --band: rgba(57, 135, 229, 0.22);
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --good: #0ca30c;
+  --good-ink: #0ca30c;
+  --warning: #fab219;
+  --warning-ink: #fab219;
+  --serious: #ec835a;
+  --serious-ink: #ec835a;
+  --critical: #e66767;
+  --critical-ink: #e66767;
+  --focus: #3987e5;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-grid: var(--grid);
+  --color-s1: var(--s1);
+  --color-s2: var(--s2);
+  --color-s3: var(--s3);
+  --color-good: var(--good);
+  --color-good-ink: var(--good-ink);
+  --color-warning: var(--warning);
+  --color-warning-ink: var(--warning-ink);
+  --color-serious: var(--serious);
+  --color-serious-ink: var(--serious-ink);
+  --color-critical: var(--critical);
+  --color-critical-ink: var(--critical-ink);
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    min-height: 100dvh;
+  }
+  ::selection {
+    background: var(--s1);
+    color: #ffffff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  table {
+    font-variant-numeric: tabular-nums;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.num {
+  font-variant-numeric: tabular-nums lining-nums;
+}
